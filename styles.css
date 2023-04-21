@@ -1,0 +1,40 @@
+
+.calculator {
+    display: flex;
+}
+
+.calc-span {
+    width: 600px;
+    height: 100px;
+    margin-left: 20px;
+    font-size: 90px;
+    border: 2px black solid;
+}
+
+.numbers {
+    display: flex;
+    flex-wrap: wrap;
+    width: 600px;
+    height: 600px;
+    margin: 10px;
+}
+
+.operations {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.operation-button {
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+}
+
+.number {
+    margin: 10px;
+    width: calc( ( 100% - 20px * 3) / 3 );
+    font-size: 90px;
+    cursor: pointer;
+}
+
