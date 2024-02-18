@@ -10,32 +10,56 @@ const elements = {
     equalButtonEl: document.querySelector(".equal-button"),
 }
 
-class Calculator {
-    constructor(a, b) {
-        this.a = a
-        this.b = b
-    }
-    add(a, b) {
-        return a + b;
-    }
-    WriteNumberFunction(event) {
+const calculator = {
+    a: "",
+    b: "",
+    WriteFirstNumberFunction(event) {
         event.target.classList.add("buttonClicked")
         let neededNumber = elements.newButtonNumbersEl.findIndex((button) => button.classList.contains("buttonClicked"));
-        elements.calcSpanEl.textContent = `${elements.calcSpanEl.textContent}${neededNumber + 1}`
+        elements.calcSpanEl.textContent += neededNumber + 1;
+        calculator.a += `${neededNumber + 1}`;
         event.target.classList.remove("buttonClicked");
-        const num = Number(`${elements.calcSpanEl.textContent}${neededNumber + 1}`);
-        this.a = num;
-}
-    // AddOperationFunction(event) {
-    //     event.target.classList.add("operationButtonClicked");
-    //     let neededIndex = elements.operationButtonsEl.find((button) => button.classList.contains("operationButtonClicked"));
-    //     if (elements.operationButtonsEl[neededIndex].classlist.contains("plus"))
-    // }
+},
+    WriteSecondNumberFunction(event) {
+        event.target.classList.add("buttonClicked")
+        let neededNumber = elements.newButtonNumbersEl.findIndex((button) => button.classList.contains("buttonClicked"));
+        elements.calcSpanEl.textContent += neededNumber + 1;
+        event.target.classList.remove("buttonClicked");
+        calculator.b += `${neededNumber + 1}`;
+},
+    AddOperationFunction(event) {
+        event.target.classList.add("operationButtonClicked");
+        const neededIndex = elements.operationButtonsEl.findIndex((button) => button.classList.contains("operationButtonClicked"));
+        if (elements.operationButtonsEl[neededIndex].classList.contains("plus")) {
+            elements.calcSpanEl.textContent += "+";
+        } else if (elements.operationButtonsEl[neededIndex].classList.contains("minus")) {
+            elements.calcSpanEl.textContent += "-";
+        } else if (elements.operationButtonsEl[neededIndex].classList.contains("multiply")) {
+            elements.calcSpanEl.textContent += "*";
+        } else if (elements.operationButtonsEl[neededIndex].classList.contains("divide")) {
+            elements.calcSpanEl.textContent += "/";
+        }
+        elements.newButtonNumbersEl.forEach((button) => button.removeEventListener("click", calculator.WriteFirstNumberFunction));
+        elements.newButtonNumbersEl.forEach((button) => button.addEventListener("click", calculator.WriteSecondNumberFunction));
+},
+    AddEqualFunction() {
+        let answer = "";
+        const neededIndex = elements.operationButtonsEl.findIndex((button) => button.classList.contains("operationButtonClicked"));
+        if (elements.operationButtonsEl[neededIndex].classList.contains("plus")) {
+            answer = `${elements.calcSpanEl.textContent}=${Number(calculator.a) + Number(calculator.b)}`;
+        } else if (elements.operationButtonsEl[neededIndex].classList.contains("minus")) {
+            answer = `${elements.calcSpanEl.textContent}=${Number(calculator.a) - Number(calculator.b)}`;
+        } else if (elements.operationButtonsEl[neededIndex].classList.contains("multiply")) {
+            answer = `${elements.calcSpanEl.textContent}=${Number(calculator.a) * Number(calculator.b)}`;
+        } else if (elements.operationButtonsEl[neededIndex].classList.contains("divide")) {
+            answer = `${elements.calcSpanEl.textContent}=${Number(calculator.a) / Number(calculator.b)}`;
+        }
+        elements.calcSpanEl.textContent = answer;
+    }
 } 
 
-const calculator = new Calculator();
+console.log(calculator)
 
-
-
-elements.newButtonNumbersEl.forEach((button) => button.addEventListener("click", calculator.WriteNumberFunction));
-// elements.operationButtonsEl.forEach((button) => button.addEventListener("click", calculator.AddOperationFunction));
+elements.newButtonNumbersEl.forEach((button) => button.addEventListener("click", calculator.WriteFirstNumberFunction));
+elements.operationButtonsEl.forEach((button) => button.addEventListener("click", calculator.AddOperationFunction));
+elements.equalButtonEl.addEventListener("click", calculator.AddEqualFunction)
